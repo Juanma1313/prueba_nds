@@ -8,24 +8,75 @@ https://docs.djangoproject.com/en/5.1/topics/settings/
 
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.1/ref/settings/
-"""
 
+===============================================================================
+SECURITY WARNING:
+The secret data, that can compromise the production system, should be defined
+locally in BASE_DIR+"/env.py" file for development.
+env.py file has the following form:
+        from os import environ
+        environ["variable_name_1"] = "value_1"
+        environ["variable_name_2"] = "value_2"
+        :   :
+
+The following lines are the names of the enviromental variables required.
+    DEVELOPMENT
+        Values: "True" or "False"
+    SECRET_KEY
+        Example: "9087zxcv98z798bv^=098zxcv098xzcv09*u2dsd2u+&hddf0^^uj"
+    ALLOWED_HOSTS
+        Example: "127.0.0.1,localhost, diyshop-1c0dad79f0a0.herokuapp.com"
+    DATABASE_URL
+        Example: "postgres://cmftklgz:gYdAbasasdasdasdsadsad234@dumbo.db.elep\
+            hantsql.com/cmftklgz"
+    ACCOUNT_EMAIL_VERIFICATION
+        Values: "none" or "mandatory"
+    EMAIL_FROM_DEFAULT
+        Example: "sales-dep@diyshop.com"
+    EMAIL_HOST
+        Example: "smtp.gmail.com"
+    EMAIL_HOST_USER
+        Example: "diyshop@gmail.com"
+    EMAIL_HOST_PASSWORD
+        Example: "asldknlmalsm"
+        Note:  gmail smtp servers do not accept user passwords
+                but application passwords can be used.
+
+IMPORTANT NOTES:
+    - NEVER allow the env.py file to be pushed to a public development or
+        deployment repositories (Github, GitLab, Bitbucket, etc.)
+    - Do not need to define "DEVELOPMENT" variable in the production system.
+        It will be set to "False" by default
+    - In the production environment, this variables must be defined as
+        environmental varibles at the django server in services like Heroku,
+        AWS Activate, Google Cloud, etc.
+"""
 from pathlib import Path
+from os import getenv, path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+if path.isfile("env.py"):
+    import env
+    DEPLOYED = False
+    print(">>> Using Local Environment File env.py <<<")
+else:
+    DEPLOYED = True
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ey-jdo78dc0y$nq7*@*k5qnscj2f0z!c&m7f@vu8*=c^9bg!6b'
-
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEVELOPMENT = getenv('DEVELOPMENT', False)
 
-ALLOWED_HOSTS = []
+DEBUG = getenv('DEBUG', DEVELOPMENT)
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = getenv('SECRET_KEY', '')
+
+
+ALLOWED_HOSTS = getenv('ALLOWED_HOSTS', ",").split(",")
 
 
 # Application definition
@@ -124,3 +175,7 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'task_mgr.Task_mgr_User'
+
+if DEBUG:
+    import django
+    print(f">>> DEBUG MODE: Django Version: {django.get_version()} <<<")
