@@ -1,0 +1,9 @@
+bin/
+lib/
+*.sqlite3
+core.Microsoft*
+core.mongo*
+core.python*
+env.py
+__pycache__/
+*.py[cod]
