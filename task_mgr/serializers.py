@@ -31,6 +31,19 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         return new_user
 
 
+class UserProfileSerializer(serializers.ModelSerializer):
+    task_posts = serializers.SerializerMethodField()
+
+    class Meta:
+        model = get_user_model()
+        fields = ["id", "username", "first_name", "last_name", "job_title",  "tasks"]
+
+    def get_tasks(self, user):
+        tasks = user.tasks.all()[:9]
+        serializer = TaskSerializer(tasks, many=True)
+        return serializer.data
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task_mgr_User

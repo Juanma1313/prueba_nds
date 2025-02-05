@@ -89,7 +89,6 @@ class Task_mgr_TaskAdmin(admin.ModelAdmin):
     def Cancelled(self, request, queryset):
         queryset.update(status=2)
 
-
     # organize the admin form fields for editting details
     fieldsets = (
         ('Tasks', {
