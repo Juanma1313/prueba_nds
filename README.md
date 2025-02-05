@@ -55,6 +55,8 @@ Requisitos del sistema:
 # **Pruebas**
 Aunque he realizado pruebas sobre todas las interfaces, usando usando la herramienta Postman de VSC. Estas no han sido exaustivas.
 
+Para popular más facilmente la base de datos, he creado las interfaces de administración de datos usando la API de administracion de Django. 
+
 Adjunto algunos de los ejemplos de las pruebas que he realizado usando curl.
 
 ## Pruebas de alta de usuarios
