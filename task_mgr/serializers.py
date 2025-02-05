@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Task_mgr_User
+from .models import Task_mgr_User, Task_mgr_Task
 from django.contrib.auth import get_user_model
 
 
@@ -30,3 +30,17 @@ class UserRegistrationSerializer(serializers.ModelSerializer):
         new_user.save()
         return new_user
 
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task_mgr_User
+        fields = ["id", "username", "first_name", "last_name"]
+
+
+class TaskSerializer(serializers.ModelSerializer):
+    author = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Task_mgr_Task
+        fields = ['id', 'title', 'author', 'details', 'priority',
+                  'starts_on', 'ends_on', 'created_on', 'updated_on', 'status']
